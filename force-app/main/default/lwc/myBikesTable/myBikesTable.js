@@ -1,25 +1,32 @@
-import { LightningElement, wire } from 'lwc';
+import { api, LightningElement, wire } from 'lwc';
 import PF from '@salesforce/messageChannel/ProductsFiltered__c';
 import {
   subscribe,
   APPLICATION_SCOPE,
   MessageContext
 } from 'lightning/messageService';
+import { refreshApex } from '@salesforce/apex';
+import { updateRecord } from 'lightning/uiRecordApi';
+
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import NAME_FIELD from '@salesforce/schema/Product__c.FirstName';
+import ID_FIELD from '@salesforce/schema/Product__c.Id';
 
 const columnField = [
-  {
-    label:"Image",
-    fieldName:'Picture_URL__c',
-    type:'customImage',
+  { label:"Image", fieldName:'Picture_URL__c', type:'customImage',
     typeAttributes: {
       altTextImage: { fieldName: 'Name'}
     }
-  }
+  },
+  {label:"Name", fieldName: 'Name', editable: true}
 ];
 
 export default class MyBikesTable extends LightningElement {
   @wire(MessageContext)
   messageContext;
+
+  @api
+  recordId;
 
   /**
    * Data for my datatable
