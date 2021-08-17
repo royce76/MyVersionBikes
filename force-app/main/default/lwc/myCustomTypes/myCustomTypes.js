@@ -6,7 +6,6 @@ export default class MyCustomTypes extends LightningDatatable {
   static customTypes = {
     customImage: {
       template: customImage,
-      standardCellLayout: true,
       typeAttributes: ['altTextImage']
     }
   };

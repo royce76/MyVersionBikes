@@ -12,10 +12,9 @@ const columnField = [
     fieldName:'Picture_URL__c',
     type:'customImage',
     typeAttributes: {
-      altTextImage:{ fieldName : 'Name'}
+      altTextImage: { fieldName: 'Name'}
     }
-  },
-  {label: "type", fieldName: 'mountainBike', type: 'text'}
+  }
 ];
 
 export default class MyBikesTable extends LightningElement {
@@ -49,7 +48,7 @@ export default class MyBikesTable extends LightningElement {
   handleMessage(message) {
     this.bikes = message.filters;
     this.bikes = this.bikes.map((bike)=>{
-      let mountain = bike.Category__c === 'Mountain' ? 'Mountain Bike': '';
+      let mountain = bike.Category__c === 'Mountain' ? 'utility:animal_and_nature': '';
       return {...bike, 'mountainBike': mountain}
     });
   }
