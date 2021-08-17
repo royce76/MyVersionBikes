@@ -1,0 +1,7 @@
+<template>
+  <div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+    <img src={bike.Picture_URL__c} alt={bike.Name}>
+    <p>{bike.Name}</p>
+    <p><lightning-formatted-number value={bike.MSRP__c} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+  </div>
+</template>

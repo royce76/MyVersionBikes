@@ -1,0 +1,69 @@
+<template>
+  <lightning-card title="Recherche">
+  
+    <lightning-input
+        name="search"
+        label="Search when user change inputs"
+        type="search"
+        data-field-name="Name"
+        onchange={handleChange}
+    ></lightning-input>   
+ 
+    <lightning-slider
+      label="Max Price" 
+      size="medium" 
+      min="0" 
+      max="10000"
+      step='100'
+      data-field-name="MSRP__c" 
+      value={maxPrice}
+      onchange={handleChange}
+    ></lightning-slider>
+
+    <template for:each={category} for:item="key">
+      <div class="slds-box" key={key.label}>
+        <h2 class="header">Category</h2>
+        <lightning-input
+          type="toggle"
+          label={key.label}
+          name={key.label}
+          data-value={key.value}
+          data-field-name="Category__c"
+          onchange={handleChange}
+          checked
+        ></lightning-input>
+      </div>
+    </template>
+
+    <template for:each={level} for:item="key">
+      <div class="slds-box" key={key.label}>
+        <h2 class="header">Level</h2>
+        <lightning-input
+          type="toggle"
+          label={key.label}
+          name={key.label}
+          data-value={key.value}
+          data-field-name="Level__c"
+          onchange={handleChange} 
+          checked
+        ></lightning-input>
+      </div>
+    </template>
+
+    <template for:each={material} for:item="key">
+      <div class="slds-box" key={key.label}>
+        <h2 class="header">Material</h2>
+        <lightning-input
+          type="toggle"
+          label={key.label}
+          name={key.label}
+          data-value={key.value}
+          data-field-name="Material__c"
+          onchange={handleChange} 
+          checked
+        ></lightning-input>
+      </div>
+    </template>
+  
+  </lightning-card>
+</template>
