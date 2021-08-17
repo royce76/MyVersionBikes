@@ -7,21 +7,29 @@ import {
 } from 'lightning/messageService';
 
 const columnField = [
-  /* {
+  {
     label:"Image",
     fieldName:'Picture_URL__c',
-    type:'myImage',
+    type:'customImage',
     typeAttributes: {
-      Name:{ fieldName : 'Name'}
+      altTextImage:{ fieldName : 'Name'}
     }
-  } */
+  },
+  {label: "type", fieldName: 'mountainBike', type: 'text'}
 ];
 
 export default class MyBikesTable extends LightningElement {
   @wire(MessageContext)
   messageContext;
 
+  /**
+   * Data for my datatable
+   */
   bikes;
+
+  /**
+   * Property for my datatable
+   */
   columns = columnField;
 
   subscription = null;
@@ -40,7 +48,10 @@ export default class MyBikesTable extends LightningElement {
   // Handler for message received by component
   handleMessage(message) {
     this.bikes = message.filters;
-    console.log(this.bikes);
+    this.bikes = this.bikes.map((bike)=>{
+      let mountain = bike.Category__c === 'Mountain' ? 'Mountain Bike': '';
+      return {...bike, 'mountainBike': mountain}
+    });
   }
 
   connectedCallback() {
