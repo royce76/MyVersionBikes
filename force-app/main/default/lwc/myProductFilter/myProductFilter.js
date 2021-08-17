@@ -37,7 +37,7 @@ export default class MyProductFilter extends LightningElement {
   /**
    * 
    * @param {object} {data,error}
-   * on publie dans un message tous les vélos en appelant la méthode apex getProducts 
+   * publish first message with all bikes before using event onchange 
    */
   @wire(getProducts)
   wiredProducts({data,error}) {
@@ -61,7 +61,7 @@ export default class MyProductFilter extends LightningElement {
   /**
    * 
    * @param {obejct} PRODUCT
-   * On récupère toutes les picklists, cetagory, level, material 
+   * get picklist values from category, material and level
    */
   @wire(getPicklistValuesByRecordType, {objectApiName: PRODUCT, recordTypeId: '$productInfo.data.defaultRecordTypeId'})
   wiredListOfPicklistProduct({data, error}) {
@@ -112,7 +112,7 @@ export default class MyProductFilter extends LightningElement {
   /**
    * 
    * @param {eventListenener} event
-   * on publie dans le message un nouveau tableau d'objets de vélo filtré 
+   * publish a new bikes objects array
    */
   handleChange(event) {
     /**
@@ -160,7 +160,7 @@ export default class MyProductFilter extends LightningElement {
   /**
    * 
    * @param {object} datas 
-   * @returns tableau d'objets de vélo
+   * @returns bikes objects array
    */
   filterProducts(datas) {
     const datasFiltered = [];
