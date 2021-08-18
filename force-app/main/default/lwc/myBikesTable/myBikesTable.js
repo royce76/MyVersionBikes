@@ -1,12 +1,6 @@
 import { LightningElement, wire } from 'lwc';
-import PF from '@salesforce/messageChannel/ProductsFiltered__c';
 
-import {
-  subscribe,
-  publish,
-  APPLICATION_SCOPE,
-  MessageContext
-} from 'lightning/messageService';
+import getProducts from '@salesforce/apex/MyProductController.getProducts';
 
 import { refreshApex } from '@salesforce/apex';
 import { updateRecord } from 'lightning/uiRecordApi';
@@ -25,43 +19,17 @@ const columnField = [
 ];
 
 export default class MyBikesTable extends LightningElement {
-  @wire(MessageContext)
-  messageContext;
-
   //When a user edits a cell, the updated value is stored in draft-values
   draftValues = [];
 
   //Data for my datatable
+  @wire(getProducts)
   bikes;
 
   //Property for my datatable
   columns = columnField;
 
   subscription = null;
-
-  subscribeToMessageChannel() {
-    if(!this.subscription) {
-      this.subscription = subscribe(
-        this.messageContext,
-        PF,
-        (message)=> this.handleMessage(message) ,
-        { scope: APPLICATION_SCOPE }
-      );
-    }
-  }
-
-  // Handler for message received by component
-  handleMessage(message) {
-    this.bikes = message.filters;
-    /* this.bikes = this.bikes.map((bike)=> {
-      let mountain = bike.Category__c === 'Mountain' ? 'utility:animal_and_nature': '';
-      return {...bike, 'mountainBike': mountain}
-    }); */
-  }
-
-  connectedCallback() {
-    this.subscribeToMessageChannel();
-  }
 
   handleSave(event) {
     const fields = {};
@@ -71,22 +39,21 @@ export default class MyBikesTable extends LightningElement {
     const recordInput = { fields };
 
     updateRecord(recordInput)
-    .then( (result) => {
-      console.log(result);
-      console.log(this.bikes);
-      for (const item of this.bikes) {
-        console.log(item);
-      }
-    })
     .then( () => {
       this.dispatchEvent(
         new ShowToastEvent({
           title: 'Success',
           message: 'Contact updated',
           variant: 'success'
-        })
+        })  
       );
-    }).catch( () => {
+      // Display fresh data in the datatable
+      return refreshApex(this.bikes).then(() => {
+        // Clear all draft values in the datatable
+        this.draftValues = [];
+      });
+    })
+    .catch( () => {
       this.dispatchEvent(
         new ShowToastEvent({
             title: 'Error updating or reloading record',
