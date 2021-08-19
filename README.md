@@ -8,7 +8,7 @@ Get [Ebikes-lwc](https://github.com/trailheadapps/ebikes-lwc) repository in the 
 
 ## App manager, lightning app builder
 
-Create your own app with a home page. And play with my component.
+Create your own app with a home page. And play with my components.
 
 ### List all bikes in a lightning card filtered with tiles with one REQUEST Apex
 
@@ -26,4 +26,6 @@ Create your own app with a home page. And play with my component.
 ### CustomType in Datatable
 
 - Put an image in a column, use the customType.
+- [Datatable-component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myBikesTable)
 - [CustomType-Component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myCustomTypes)
+- [Source-Salesforce](https://developer.salesforce.com/docs/component-library/documentation/en/lwc/data_table_custom_types)
