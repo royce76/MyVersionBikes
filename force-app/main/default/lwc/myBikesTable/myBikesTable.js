@@ -66,11 +66,6 @@ export default class MyBikesTable extends LightningElement {
 
 } */
 
-///////////////////
-///////////////////
-// EN ESSAYANT DE PRENDRE DIRECTEMENT BIKES DE LA RECHERCHE DE FILTRE ET NON PAR UNE METHODE APEX
-// PROBLEME JE N'ARRIVE PAS A RAFRAICHIR LE TABLEAU
-
 import { LightningElement, wire } from 'lwc';
 
 import getProducts from '@salesforce/apex/MyProductController.getProducts';
@@ -107,10 +102,11 @@ export default class MyBikesTable extends LightningElement {
   //When a user edits a cell, the updated value is stored in draft-values
   draftValues = [];
 
-  //Data for my datatable
+  //Only to refresh datable
   @wire(getProducts)
   bikes;
 
+  //Data for my datatable
   velo;
 
   //Property for my datatable
@@ -130,6 +126,7 @@ export default class MyBikesTable extends LightningElement {
   }
 
   // Handler for message received by component
+  // Velo get all bikes filtered to feed datatable
   handleMessage(message) {
     this.velo = message.filters;
   }
@@ -138,7 +135,13 @@ export default class MyBikesTable extends LightningElement {
     this.subscribeToMessageChannel();
   }
 
+  /**
+   * 
+   * @param {event} event
+   * save one single row in datatable 
+   */
   handleSave(event) {
+    //fields will save the new record
     const fields = {};
     fields[ID_FIELD.fieldApiName] = event.detail.draftValues[0].Id;
     fields[NAME_FIELD.fieldApiName] = event.detail.draftValues[0].Name;
@@ -154,12 +157,12 @@ export default class MyBikesTable extends LightningElement {
           variant: 'success'
         })
       );
+      // Keep all bikes has been filtered
       const velofilter = this.velo;
       // Display fresh data in the datatable
       return refreshApex(this.bikes).then(() => {
-        console.log(velofilter,'velofilter');
-        console.log(this.velo);
         const newBike = [];
+        //Once bikes has been refresh, keep in a const variable named refreshVelo
         const refreshVelo = this.velo;
         for (const velo of refreshVelo) {
           for(const bike of velofilter) {
@@ -168,7 +171,9 @@ export default class MyBikesTable extends LightningElement {
             }
           }
         }
-        console.log(newBike);
+        //Because this.bikes has been refresh, this.velo too.
+        //So to keep filters in same states when bikes is updated, like datatable
+        //Values of Velo get the const newBike
         this.velo = newBike;
         // Clear all draft values in the datatable
         this.draftValues = [];
