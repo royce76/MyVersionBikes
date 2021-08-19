@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+/* import { LightningElement, wire } from 'lwc';
 
 import getProducts from '@salesforce/apex/MyProductController.getProducts';
 
@@ -64,14 +64,12 @@ export default class MyBikesTable extends LightningElement {
     })
   }
 
-}
+} */
 
-///////////////////
-///////////////////
-// EN ESSAYANT DE PRENDRE DIRECTEMENT BIKES DE LA RECHERCHE DE FILTRE ET NON PAR UNE METHODE APEX
-// PROBLEME JE N'ARRIVE PAS A RAFRAICHIR LE TABLEAU
+import { LightningElement, wire } from 'lwc';
 
-/* import { LightningElement, wire } from 'lwc';
+import getProducts from '@salesforce/apex/MyProductController.getProducts';
+
 import PF from '@salesforce/messageChannel/ProductsFiltered__c';
 
 import {
@@ -104,8 +102,12 @@ export default class MyBikesTable extends LightningElement {
   //When a user edits a cell, the updated value is stored in draft-values
   draftValues = [];
 
-  //Data for my datatable
+  //Only to refresh datable
+  @wire(getProducts)
   bikes;
+
+  //Data for my datatable
+  velo;
 
   //Property for my datatable
   columns = columnField;
@@ -124,19 +126,22 @@ export default class MyBikesTable extends LightningElement {
   }
 
   // Handler for message received by component
+  // Velo get all bikes filtered to feed datatable
   handleMessage(message) {
-    this.bikes = message.filters;
-    //this.bikes = this.bikes.map((bike)=> {
-    //let mountain = bike.Category__c === 'Mountain' ? 'utility:animal_and_nature': '';
-    //return {...bike, 'mountainBike': mountain}
-    //});
+    this.velo = message.filters;
   }
 
   connectedCallback() {
     this.subscribeToMessageChannel();
   }
 
+  /**
+   * 
+   * @param {event} event
+   * save one single row in datatable 
+   */
   handleSave(event) {
+    //fields will save the new record
     const fields = {};
     fields[ID_FIELD.fieldApiName] = event.detail.draftValues[0].Id;
     fields[NAME_FIELD.fieldApiName] = event.detail.draftValues[0].Name;
@@ -152,8 +157,27 @@ export default class MyBikesTable extends LightningElement {
           variant: 'success'
         })
       );
-      location.reload();
-      return this.draftValues = [];
+      // Keep all bikes has been filtered
+      const velofilter = this.velo;
+      // Display fresh data in the datatable
+      return refreshApex(this.bikes).then(() => {
+        const newBike = [];
+        //Once bikes has been refresh, keep in a const variable named refreshVelo
+        const refreshVelo = this.velo;
+        for (const velo of refreshVelo) {
+          for(const bike of velofilter) {
+            if(velo.Id === bike.Id) {
+              newBike.push(velo);
+            }
+          }
+        }
+        //Because this.bikes has been refresh, this.velo too.
+        //So to keep filters in same states when bikes is updated, like datatable
+        //Values of Velo get the const newBike
+        this.velo = newBike;
+        // Clear all draft values in the datatable
+        this.draftValues = [];
+      });
     })
     .catch( () => {
       this.dispatchEvent(
@@ -167,4 +191,4 @@ export default class MyBikesTable extends LightningElement {
     
   }
 
-} */
+}

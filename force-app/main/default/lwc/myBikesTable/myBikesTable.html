@@ -1,10 +1,21 @@
 <template>
     <c-my-custom-types
       key-field="Id"
-      data={bikes.data}
+      data={velo}
       columns={columns}
       onsave={handleSave}
       draft-values={draftValues}
     >
     </c-my-custom-types>
+
+    <lightning-card title="Source">
+      <c-view-source source="lwc/myBikesTable" slot="footer">
+        Datable one single row can be changed.
+      </c-view-source>
+  
+      <c-view-source source="lwc/myCustomTypes" slot="footer">
+        Put a customType in datatable like image
+      </c-view-source>
+    </lightning-card>
+
 </template>
