@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+/* import { LightningElement, wire } from 'lwc';
 
 import getProducts from '@salesforce/apex/MyProductController.getProducts';
 
@@ -64,14 +64,17 @@ export default class MyBikesTable extends LightningElement {
     })
   }
 
-}
+} */
 
 ///////////////////
 ///////////////////
 // EN ESSAYANT DE PRENDRE DIRECTEMENT BIKES DE LA RECHERCHE DE FILTRE ET NON PAR UNE METHODE APEX
 // PROBLEME JE N'ARRIVE PAS A RAFRAICHIR LE TABLEAU
 
-/* import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire } from 'lwc';
+
+import getProducts from '@salesforce/apex/MyProductController.getProducts';
+
 import PF from '@salesforce/messageChannel/ProductsFiltered__c';
 
 import {
@@ -105,7 +108,10 @@ export default class MyBikesTable extends LightningElement {
   draftValues = [];
 
   //Data for my datatable
+  @wire(getProducts)
   bikes;
+
+  velo;
 
   //Property for my datatable
   columns = columnField;
@@ -125,11 +131,7 @@ export default class MyBikesTable extends LightningElement {
 
   // Handler for message received by component
   handleMessage(message) {
-    this.bikes = message.filters;
-    //this.bikes = this.bikes.map((bike)=> {
-    //let mountain = bike.Category__c === 'Mountain' ? 'utility:animal_and_nature': '';
-    //return {...bike, 'mountainBike': mountain}
-    //});
+    this.velo = message.filters;
   }
 
   connectedCallback() {
@@ -152,8 +154,25 @@ export default class MyBikesTable extends LightningElement {
           variant: 'success'
         })
       );
-      location.reload();
-      return this.draftValues = [];
+      const velofilter = this.velo;
+      // Display fresh data in the datatable
+      return refreshApex(this.bikes).then(() => {
+        console.log(velofilter,'velofilter');
+        console.log(this.velo);
+        const newBike = [];
+        const refreshVelo = this.velo;
+        for (const velo of refreshVelo) {
+          for(const bike of velofilter) {
+            if(velo.Id === bike.Id) {
+              newBike.push(velo);
+            }
+          }
+        }
+        console.log(newBike);
+        this.velo = newBike;
+        // Clear all draft values in the datatable
+        this.draftValues = [];
+      });
     })
     .catch( () => {
       this.dispatchEvent(
@@ -167,4 +186,4 @@ export default class MyBikesTable extends LightningElement {
     
   }
 
-} */
+}
