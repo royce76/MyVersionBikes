@@ -1,14 +1,16 @@
 <template>
-    <c-my-custom-types
+
+    <lightning-card title="Edit one single row">
+
+      <c-my-custom-types
       key-field="Id"
       data={velo}
       columns={columns}
       onsave={handleSave}
       draft-values={draftValues}
-    >
-    </c-my-custom-types>
+      >
+      </c-my-custom-types>
 
-    <lightning-card title="Source">
       <c-view-source source="lwc/myBikesTable" slot="footer">
         Datable one single row can be changed.
       </c-view-source>
