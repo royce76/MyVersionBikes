@@ -1,18 +1,29 @@
-# Salesforce DX Project: Next Steps
+# Salesforce DX Project: My VersionBikes
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+This project aims to create a toolbox. You will find for each component a source link to its Js,HTML,XML file.
 
-## How Do You Plan to Deploy Your Changes?
+## To use It in your Playground.
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+Get [Ebikes-lwc](https://github.com/trailheadapps/ebikes-lwc) repository in the sample Gallery. Follow the guide to setup it as Salesforce do.
 
-## Configure Your Salesforce DX Project
+## App manager, lightning app builder
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+Create your own app with a home page. And play with my component.
 
-## Read All About It
+### List all bikes in a lightning card filtered with tiles with one REQUEST Apex
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+- This list of all bikes is displayed in tiles for each bike. You can filter it with only one request Apex instead of Salesforce do in the ebikes app.
+- [Filter-component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myProductFilter)
+- [ListTile-component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myProductList)
+- [OneTile-component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myProductTile)
+
+### Use the same filter for the Datatable (One single row edited)
+
+- Even the datatable is edited, saved and refresh, the filter keep the same state.
+- [Filter-component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myProductFilter)
+- [Datatable-component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myBikesTable)
+
+### CustomType in Datatable
+
+- Put an image in a column, use the customType.
+- [CustomType-Component](https://github.com/royce76/MyVersionBikes/tree/master/force-app/main/default/lwc/myCustomTypes)
